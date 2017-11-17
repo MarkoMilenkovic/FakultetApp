@@ -27,6 +27,6 @@ public class PolaganjeEndpoint {
         Kontroler.getInstance().obrisi(polaganje);
         return Response.noContent().build();
 
-//        return Response.ok().build();
+//        return Response.ok().build(); fheihfiuehfiuegfi
     }
 }
