@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:outputStylesheet name="./css/cssLayout.css"/>
+
+    <body>
+        <ui:composition template="./newTemplate.xhtml">
+
+            <ui:define name="top">
+                <h2>Unos studenta od strane: #{mbPrijava.user.username} </h2>
+            </ui:define>
+
+            <ui:define name="left">
+                <h:form>          
+                    <p:growl id="messages" showDetail="false" />
+
+                    <p:commandButton id="dynaButton" value="Opcije" type="button" icon="ui-icon-extlink" />
+                    <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
+                        <p:submenu label="Rad sa studentima" icon="ui-icon-extlink">
+                            <p:menuitem value="Unos novog studenta"  icon="ui-icon-disk" action="index?faces-redirec=true"/>
+                            <p:menuitem value="Prikaz svih studenata"  icon="ui-icon-arrowrefresh-1-w" action="prva?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Rad sa polaganjima" icon="ui-icon-extlink">
+                            <p:menuitem value="Unos polaganja"  icon="ui-icon-disk" action="unosPolaganja?faces-redirect=true" />
+                            <p:menuitem value="Prikaz svih polaganja" icon="ui-icon-arrowrefresh-1-w" action="prikazSvihPolaganja?faces-redirect=true"/>
+                            <p:menuitem value="Prikaz neuspešnih polaganja" icon="ui-icon-contact" action="prikazNeuspesnihPolaganja?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Rad sa ispitima" icon="ui-icon-extlink">
+                            <p:menuitem value="Prikaz svih ispita" icon="ui-icon-arrowrefresh-1-w" action="prikazIspita?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Ostalo" icon="ui-icon-extlink" >
+                            <p:menuitem value="Izloguj se" icon="ui-icon-arrowrefresh-1-w" action="#{mbPrijava.logout()}"/>
+                        </p:submenu>
+                    </p:tieredMenu>
+                </h:form>
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form>
+                    <f:metadata>
+                        <f:event type="preRenderView" listener="#{mbUnosStudenta.onload}"/>
+                    </f:metadata>
+                    <p:panel id="panel" header="Kreiranje novog studenta">
+
+                        <h:panelGrid columns="3" cellpadding="10">
+                            <h:outputLabel for="brojIndeksa" value="Broj indeksa: *"  style="font-weight:bold; color: black"/>
+                            <h:inputText id="brojIndeksa" 
+                                         value="#{mbUnosStudenta.student.brInd}" 
+                                         required="true" 
+                                         label="Broj indeksa"
+                                         requiredMessage="Unesite broj indeksa!"
+                                         validatorMessage="Broj indeksa nije u odgovarajucem formatu!">
+                                <f:validateRegex pattern="[1-9][0-9]*[/][0-9][0-9]"/>
+                            </h:inputText>
+                            <h:message for="brojIndeksa" style="color: red"/>
+
+                            <p:outputLabel for="ime" value="Ime:"  style="font-weight:bold; color: black"/>
+                            <h:inputText id="ime" 
+                                         value="#{mbUnosStudenta.student.ime}" 
+                                         required="true" 
+                                         label="Ime "
+                                         requiredMessage="Unesite Ime!"
+                                         validatorMessage="Od 2 do 10 karaktera!">
+                                <f:validateLength minimum="2" maximum="10"/>
+                            </h:inputText>
+                            <h:message for="ime" style="color: red"/>
+
+                            <p:outputLabel for="prezime" value="Prezime:"  style="font-weight:bold; color: black"/>
+                            <h:inputText id="prezime" 
+                                         value="#{mbUnosStudenta.student.prezime}" 
+                                         required="true"
+                                         label="Prezime "
+                                         requiredMessage="Unesite prezime!"
+                                         validatorMessage="Od 2 do 30 karaktera!"
+                                         >
+                                <f:validateLength minimum="2"  maximum="30"/>
+                            </h:inputText>
+                            <h:message for="prezime" style="color: red"/>
+
+                            <h:outputLabel value="Mesto : " style="font-weight:bold; color: black" />
+                            <p:selectOneMenu value="#{mbUnosStudenta.student.ptt}"  converter="mestoCNV">
+                                <f:selectItems  value="#{mbUnosStudenta.listaMesta}"
+                                                var="m" itemLabel="#{m.naziv}" itemValue="#{m}"
+                                                />
+                            </p:selectOneMenu>
+
+
+                        </h:panelGrid>
+
+                        <h:commandButton value="Sačuvaj" action="#{mbUnosStudenta.sacuvajStudenta()}" class="btn"/>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

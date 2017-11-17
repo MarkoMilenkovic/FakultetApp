@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./newTemplate.xhtml">
+
+            <ui:define name="top" >
+                <h2>Unos polaganja od strane: #{mbPrijava.user.username} </h2>
+            </ui:define>
+
+            <ui:define name="left">
+                <h:form> 
+
+                    <p:growl id="messages" showDetail="false" />
+
+                    <p:commandButton id="dynaButton" value="Opcije" type="button" icon="ui-icon-extlink" />
+                    <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
+                        <p:submenu label="Rad sa studentima" icon="ui-icon-extlink">
+                            <p:menuitem value="Unos novog studenta"  icon="ui-icon-disk" action="index?faces-redirec=true"/>
+                            <p:menuitem value="Prikaz svih studenata"  icon="ui-icon-arrowrefresh-1-w" action="prva?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Rad sa polaganjima" icon="ui-icon-extlink">
+                            <p:menuitem value="Unos polaganja"  icon="ui-icon-disk" action="unosPolaganja?faces-redirect=true"/>
+                            <p:menuitem value="Prikaz svih polaganja" icon="ui-icon-arrowrefresh-1-w" action="prikazSvihPolaganja?faces-redirect=true"/>
+                            <p:menuitem value="Prikaz neuspešnih polaganja" icon="ui-icon-contact" action="prikazNeuspesnihPolaganja?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Rad sa ispitima" icon="ui-icon-extlink">
+                            <p:menuitem value="Prikaz svih ispita" icon="ui-icon-arrowrefresh-1-w" action="prikazIspita?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Ostalo" icon="ui-icon-extlink" >
+                            <p:menuitem value="Izloguj se" icon="ui-icon-arrowrefresh-1-w" action="#{mbPrijava.logout()}"/>
+                        </p:submenu>
+                    </p:tieredMenu>
+                </h:form>
+            </ui:define>
+            <ui:define name="content">
+                <h:form id="form">
+                    <f:metadata>
+                        <f:event type="preRenderView" listener="#{mbUnosPolaganja.onload}"/>
+                    </f:metadata>
+                    <p:panel id="panel" header="Unesite podatke o polaganju" >
+                        <p:messages id="messages"/>
+                        <h:panelGrid columns="3" cellpadding="9" id="grid">
+                            <!--<h:outputLabel value="Datum: " style="font-weight:bold; color: black"/>
+                            <h:inputText id="txtDatum" required="true" 
+                                         label="Datum" 
+                                         requiredMessage="Unesite Datum!"
+                                         value="#{mbUnosPolaganja.polaganje.datum}" 
+                                         converterMessage="Datum mora biti u formatu dd.mm.yyyy" >
+                                <f:convertDateTime pattern="dd.mm.yyyy" />
+                            </h:inputText>
+                            <h:message for="txtDatum"  style="color: red"/>-->
+                            <p:outputLabel for="mask" value="Datum:" style="font-weight:bold; color: black; "/>
+                            <p:calendar id="mask" required="true" requiredMessage="Unesite Datum!"
+                                        value="#{mbUnosPolaganja.polaganje.datum}" 
+                                        pattern="dd.MM.yyyy" showOn="button" readonlyInput="true" size="16"/>
+                            <!--<p:message for="mask" style="color: red;" />-->
+
+                            <p:outputLabel for="ocena" value="Ocena:"  style="font-weight:bold; color: black"/>
+                            <p:inputText id="ocena" 
+                                         validator="ocenaVal"
+                                         value="#{mbUnosPolaganja.polaganje.ocena}"
+                                         required="true" 
+                                         label="Ocena"
+                                         requiredMessage="Unesite Ocenu!"
+                                         validatorMessage="Ocena moze biti 5,6,7,8,9 ili 10!"
+                                         converterMessage="Ocena mora sadrzati samo cifre!" >
+                                <!--<f:validateRegex pattern="[1-9]|10"/>-->
+                            </p:inputText>
+                            <!--<p:message for="ocena" style="color: red;" />-->
+
+                            <p:outputLabel value="Ispit: " style="font-weight:bold; color: black" /> 
+                            <p:selectOneMenu value="#{mbUnosPolaganja.polaganje.ispit}"  converter="ispitCNV">
+                                <f:selectItems  value="#{mbUnosPolaganja.listaIspita}"
+                                                var="i" itemLabel="#{i.nazivIspita}" itemValue="#{i}"
+                                                />
+                            </p:selectOneMenu><br/>
+
+                            <p:outputLabel value="Student: " style="font-weight:bold; color: black" /> 
+                            <p:selectOneMenu value="#{mbUnosPolaganja.polaganje.student}"  converter="studentCNV">
+                                <f:selectItems  value="#{mbUnosPolaganja.listaStudenata}" 
+                                                var="s" itemLabel="#{s.brInd} #{s.ime} #{s.prezime}" itemValue="#{s}"
+                                                />
+                            </p:selectOneMenu><br/>
+                            <p:outputLabel value="Ispitni rok: " style="font-weight:bold; color: black" /> 
+                            <p:selectOneMenu value="#{mbUnosPolaganja.polaganje.ispitnirok}"  converter="ispitnirokCNV">
+                                <f:selectItems  value="#{mbUnosPolaganja.listaRokova}"
+                                                var="i" itemLabel="#{i.nazivIspitnogRoka}" itemValue="#{i}"
+                                                />
+                            </p:selectOneMenu><br/>
+
+                        </h:panelGrid>
+                        <p:remoteCommand name="updatePanel" update="panel"/>
+                        <p:commandButton value="Dodaj" action="#{mbUnosPolaganja.dodajPolaganjeUListu()}" >
+                            <p:ajax oncomplete="updatePanel()" />
+                        </p:commandButton>
+
+                        <br/><br/>
+
+                        <p:dataTable var="polaganje" value="#{mbUnosPolaganja.listaPolaganja}" >
+
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Polaganja" />
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:column headerText="Broj indeksa"  >
+                                <h:outputText value="#{polaganje.student.brInd}" />
+                            </p:column>
+
+                            <p:column headerText="Predmet">
+                                <h:outputText value="#{polaganje.ispit.nazivIspita}"/>
+                            </p:column>
+
+                            <p:column headerText="Rok" >
+                                <h:outputText value="#{polaganje.ispitnirok.nazivIspitnogRoka}"/>
+                            </p:column>
+
+                            <p:column headerText="Datum" >
+                                <h:outputText value="#{polaganje.datum}">
+                                    <f:convertDateTime timeZone="CET" pattern="dd-MMM-yyyy" />
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="Ocena" >
+                                <h:outputText value="#{polaganje.ocena}"/>
+                            </p:column>
+                            <p:column headerText="Izbaci" >
+                                <h:commandLink value="Izbaci" action="#{mbUnosPolaganja.izbaciIzListe(polaganje)}"/>
+                            </p:column>
+                        </p:dataTable><br/>
+                        <h:commandButton value="Sačuvaj polaganja" action="#{mbUnosPolaganja.sacuvajPolaganja()}" class="btn"/> 
+
+                    </p:panel>
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

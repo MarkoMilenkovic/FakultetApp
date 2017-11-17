@@ -1,0 +1,103 @@
+body {
+    /*background-color: #ffffff;*/
+    background-color: #CFDEF3;
+    font-size: 12px;
+    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    /*color: #000000; */ 
+    margin: 10px;
+}
+
+h1 {
+    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    border-bottom: 1px solid #AFAFAF; 
+    font-size:  16px;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    color: #D20005;
+}
+
+a:link, a:visited {
+    color: #045491;
+    font-weight : bold;
+    text-decoration: none;
+}
+
+a:link:hover, a:visited:hover  {
+    color: #045491;
+    font-weight : bold;
+    text-decoration : underline;
+}
+.btn {
+    border: 2px solid transparent;
+    background: #3498DB;
+    /*background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;*/
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 25px;
+    padding: 5px 0;
+    text-decoration: none;
+    text-shadow: none;
+    border-radius: 3px;
+    box-shadow: none;
+    transition: 0.25s;
+    /*display: block;*/
+    width: 112px;
+    height: 38px;
+    margin: 0 auto;
+}
+
+.btn:hover {
+    /*background-color: #2980B9;*/
+    background-color: #008CBA;
+    color: white;
+}
+.btn:active{
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+
+}
+
+
+
+.btnObrisi {
+    border: 2px solid transparent;
+    background: #3498DB;
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 25px;
+    padding: 5px 0;
+    text-decoration: none;
+    text-shadow: none;
+    border-radius: 3px;
+    box-shadow: none;
+    transition: 0.25s;
+    width: 72px;
+    height: 28px;
+    margin: 0 auto;
+}
+
+.btnObrisi:hover {
+    /*background-color: #2980B9;*/
+    background-color: #008CBA;
+    color: white;
+}
+.btnObrisi:active{
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+
+}
+.old{
+    background-color: #ff9999;
+}
+
+table {
+    width: 200px;
+}
+
+table tr td {
+    height: 6px;
+}
+

@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <body>
+
+        <h:messages globalOnly="true"/>
+
+        <ui:composition template="./newTemplate.xhtml">
+            <ui:define name="top">
+
+            </ui:define>
+            <ui:define name="left">
+                <h:form>          
+                    <p:growl id="messages" showDetail="true" />
+
+                    <p:commandButton id="dynaButton" value="Opcije" type="button" icon="ui-icon-extlink" />
+                    <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
+                        <p:submenu label="Rad sa studentima" icon="ui-icon-extlink">
+                            <p:menuitem value="Unos novog studenta"  icon="ui-icon-disk" action="unosStudenta?faces-redirec=true"/>
+                            <p:menuitem value="Prikaz svih studenata"  icon="ui-icon-arrowrefresh-1-w" action="prva?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Rad sa polaganjima" icon="ui-icon-extlink">
+                            <p:menuitem value="Unos polaganja"  icon="ui-icon-disk" action="unosPolaganja?faces-redirect=true"/>
+                            <p:menuitem value="Prikaz svih polaganja" icon="ui-icon-arrowrefresh-1-w" action="prikazSvihPolaganja?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Rad sa ispitima" icon="ui-icon-extlink">
+                            <p:menuitem value="Prikaz svih ispita" icon="ui-icon-arrowrefresh-1-w" action="prikazIspita?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Ostalo" icon="ui-icon-extlink" >
+                            <p:menuitem value="Izloguj se" icon="ui-icon-arrowrefresh-1-w" action="#{mbPrijava.logout()}"/>
+                        </p:submenu>
+                    </p:tieredMenu>
+                </h:form>
+                <p>
+                    <img  src="resources\indeks.jpg" width="154" height="200" ></img>
+                </p>
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h:form>
+
+                    <f:metadata>
+                        <f:event type="preRenderView" listener="#{mBPolaganje.onload}"/>
+                    </f:metadata>
+                    <p:dataTable id="tabela" var="polaganje" value="#{mBPolaganje.listaNeuspesnihPolaganja}" widgetVar="polTable"
+                                 rowStyleClass="#{polaganje.ocena le 5 ? 'old' : null}" rowIndexVar="index" styleClass="table">
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Sistem je pronasao polaganja" />
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column headerText="R.Br." style="width: 22px; text-align: left;">
+                            <h:outputText 
+                                value="#{index + 1}" />
+                        </p:column>
+                        <p:column headerText="Broj indeksa" style="width: 109px;" sortBy="#{polaganje.student.brInd}" filterBy="#{polaganje.student.brInd}">
+                            <h:outputText value="#{polaganje.student.brInd}"/>
+                        </p:column>
+                        <p:column headerText="Ime" style="width: 109px;" sortBy="#{polaganje.student.ime}" filterBy="#{polaganje.student.ime}">
+                            <h:outputText value="#{polaganje.student.ime}"/>
+                        </p:column>
+                        <p:column headerText="Prezime" style="width: 109px;" sortBy="#{polaganje.student.prezime}" filterBy="#{polaganje.student.prezime}">
+                            <h:outputText value="#{polaganje.student.prezime}"/>
+                        </p:column>
+                        <p:column headerText="Ispit" style="width:180px;" filterBy="#{polaganje.ispit.nazivIspita}" filterMatchMode="exact">
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('polTable').filter()" panelStyle="width:105px" >
+                                    <f:selectItem itemLabel="Izaberi ispit" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{mBPolaganje.listaIspita}" />
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <h:outputText value="#{polaganje.ispit.nazivIspita}"/>
+                        </p:column>
+                        <p:column headerText="Ispitni rok" style="width: 104px;" sortBy="#{polaganje.ispitnirok.nazivIspitnogRoka}" filterBy="#{polaganje.ispitnirok.nazivIspitnogRoka}">
+                            <h:outputText value="#{polaganje.ispitnirok.nazivIspitnogRoka}"/>
+                        </p:column>
+                        <p:column headerText="Ocena" style="width: 104px;" sortBy="#{polaganje.ocena}" filterBy="#{polaganje.ocena}">
+                            <h:outputText value="#{polaganje.ocena}" />
+                        </p:column>
+                        <p:column headerText="Datum polaganja">
+                            <p:calendar id="calendar" value="#{polaganje.datum}" pattern="dd.MM.yyyy" mask="true" showOn="none" readonly="true"/>
+                        </p:column>
+                        <!--                        <p:column headerText="Obrisi polaganje">
+                                                    <p:commandLink update="tabela" id="obrisi" value="Obrisi" action="#{mBPolaganje.obrisi(polaganje)}"/>
+                                                </p:column>-->
+                    </p:dataTable>
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+
+    </body>
+</html>

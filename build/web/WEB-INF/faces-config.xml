@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    
+    <navigation-rule>
+        <from-view-id>/prva.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>unosStudenta</from-outcome>
+            <to-view-id>unosStudenta.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/prva.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>unosPolaganja</from-outcome>
+            <to-view-id>unosPolaganja.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/prva.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>prikazSvihPolaganja</from-outcome>
+            <to-view-id>prikazSvihPolaganja.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/prva.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>prikazNeuspesnihPolaganja</from-outcome>
+            <to-view-id>prikazNeuspesnihPolaganja.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/prva.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>prikazIspita</from-outcome>
+            <to-view-id>prikazIspita.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        
+    </navigation-rule>
+</faces-config>

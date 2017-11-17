@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+
+
+        <ui:composition template="./newTemplate.xhtml">
+
+            <ui:define name="top">
+
+            </ui:define>
+
+            <ui:define name="left">
+                <h:form>          
+                    <p:growl id="messages" showDetail="false" />
+
+                    <p:commandButton id="dynaButton" value="Opcije" type="button" icon="ui-icon-extlink" />
+                    <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
+                        <p:submenu label="Rad sa studentima" icon="ui-icon-extlink">
+                            <p:menuitem value="Unos novog studenta"  icon="ui-icon-disk" action="unosStudenta"/>
+                            <p:menuitem value="Prikaz svih studenata"  icon="ui-icon-arrowrefresh-1-w" action="prva?faces-redirect=true"/>
+                        </p:submenu>
+                        <p:submenu label="Rad sa polaganjima" icon="ui-icon-extlink">
+                            <p:menuitem value="Unos polaganja"  icon="ui-icon-disk" action="unosPolaganja"/>
+                            <p:menuitem value="Prikaz svih polaganja" icon="ui-icon-arrowrefresh-1-w" action="prikazSvihPolaganja"/>
+                            <p:menuitem value="Prikaz neuspešnih polaganja" icon="ui-icon-contact" action="prikazNeuspesnihPolaganja"/>
+                        </p:submenu>
+                        <p:submenu label="Rad sa ispitima" icon="ui-icon-extlink">
+                            <p:menuitem value="Prikaz svih ispita" icon="ui-icon-arrowrefresh-1-w" action="prikazIspita"/>
+                        </p:submenu>
+                        <p:submenu label="Ostalo" icon="ui-icon-extlink" >
+                            <p:menuitem value="Izloguj se" icon="ui-icon-arrowrefresh-1-w" action="#{mbPrijava.logout()}"/>
+                        </p:submenu>
+                    </p:tieredMenu>
+                </h:form>
+                <p>
+                    <img  src="resources\fon.png" width="154" height="100" ></img>
+                </p>
+            </ui:define>
+
+
+
+            <ui:define name="content">
+                <h:form>
+                    <f:metadata>
+                        <f:event type="preRenderView" listener="#{mbStudent.onload}"/>
+                    </f:metadata>
+                    <p:dataTable var="student" value="#{mbStudent.listaStudenata}" >
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Sistem je pronasao studente" />
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column headerText="Broj indeksa"  sortBy="#{student.brInd}" filterBy="#{student.brInd}">
+                            <h:outputText value="#{student.brInd}" />
+                        </p:column>
+
+                        <p:column headerText="Ime" sortBy="#{student.ime}" filterBy="#{student.ime}">
+                            <h:outputText value="#{student.ime}"/>
+                        </p:column>
+
+                        <p:column headerText="Prezime" sortBy="#{student.prezime}" filterBy="#{student.prezime}">
+                            <h:outputText value="#{student.prezime}"/>
+                        </p:column>
+
+                        <p:column headerText="Mesto" sortBy="#{student.ptt.naziv}" filterBy="#{student.ptt.naziv}">
+                            <h:outputText value="#{student.ptt.naziv}"/>
+                        </p:column>
+
+                        <p:column headerText="Polaganja ispita" >
+                            <h:commandLink value="Polaganja" action="#{mbStudent.vratiPolaganja(student)}"/>
+                        </p:column>
+                    </p:dataTable>
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>LogIn</title>
+    </h:head>
+
+    <h:body >
+        <div id="header" class="top">
+            <h2>Studentski servis</h2>
+        </div>
+        <h:form>
+            <p:panel id="panel" header="Molimo ulogujte se." style="position: absolute; top: 140px; left: 150px;">
+                <h:outputStylesheet library="css" name="style.css" />
+                <!--<p:messages id="msgs" showDetail="false"/>-->
+                <p:growl id="messages" showDetail="false" />
+
+                <h:panelGrid columns="3" cellpadding="2">
+                    <p:outputLabel for="username" value="Username:" />
+                    <h:inputText id="username" value="#{mbPrijava.user.username}" required="true" label="Username"
+                                 requiredMessage="Unesite username!">
+                        <f:validateLength minimum="2" />
+                        <p:ajax update="msgUsername" event="keyup" />
+                    </h:inputText>
+                    <p:message for="username" id="msgUsername" display="icon" />
+
+                    <p:outputLabel for="password" value="Password:" />
+                    <h:inputSecret id="password" requiredMessage="Unesite password!" value="#{mbPrijava.user.password}" label="Password" required="true">
+                        <f:validateLength minimum="2" />
+                        <p:ajax update="msgPassword" event="keyup" />
+                    </h:inputSecret>
+                    <p:message for="password" id="msgPassword" display="icon" />
+
+                </h:panelGrid>
+
+                <h:commandButton value="Prijavi se" action="#{mbPrijava.prijaviUsera()}" class="btn"/>
+
+            </p:panel>
+        </h:form>
+        <div id="footer" class="footer_content">
+            <h3 style="font-size: 9.5px; text-align: center">Copyright: Fakultet organizacionih nauka</h3>
+    	    </div>
+    </h:body>
+</html>
+
